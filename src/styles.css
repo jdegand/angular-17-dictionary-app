@@ -20,7 +20,8 @@ body[data-theme="light"] {
   --playButtonPurple: #a463d6;
   --playButtonBackground: #e9d0fa;
   --darkPurple: #814b81;
-  --form-input-color: #6b6b6b; /* #757575 too light */
+  --form-input-color: #6b6b6b;
+  /* #757575 too light */
   --select-focus-outline: #050505;
   --toggle-background: #757575;
   --fill: #000;

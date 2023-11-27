@@ -1,4 +1,4 @@
-import { Component, Inject, ViewEncapsulation } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 
@@ -12,6 +12,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 export class FontSelectComponent {
   fonts = ['Serif', 'Sans-Serif', 'Monospace'];
 
+  // replace with inject function for better type safety 
   constructor(@Inject(DOCUMENT) private document: Document) {}
 
   fontChange(fontForm: NgForm) {

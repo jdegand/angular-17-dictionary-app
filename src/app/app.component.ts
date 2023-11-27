@@ -4,7 +4,6 @@ import { Router, RouterModule } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
 import { FontSelectComponent } from './font-select/font-select.component';
 import { DarkModeTogglerComponent } from './dark-mode-toggler/dark-mode-toggler.component';
-import { ApiService } from './services/api.service';
 
 @Component({
   selector: 'app-root',
@@ -24,9 +23,8 @@ export class AppComponent {
 
   constructor(
     private route: Router,
-    @Inject(DOCUMENT) private document: Document,
-    private apiService: ApiService
-  ) {}
+    @Inject(DOCUMENT) private document: Document
+  ) { }
 
   darkMode: any = this.document.body.getAttribute('data-theme'); // null / light / dark
 

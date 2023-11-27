@@ -18,8 +18,8 @@ export class WordDetailsComponent {
   playing = false;
   searched: string | undefined;
 
-  @Input() set word(word: string){
-    this.searched = word; 
+  @Input() set word(word: string) {
+    this.searched = word;
   }
 
   apiService = inject(ApiService);
