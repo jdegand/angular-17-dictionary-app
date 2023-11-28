@@ -95,3 +95,4 @@ $ npm start
 
 - [Stack Overflow](https://stackoverflow.com/questions/36835123/how-do-i-pass-data-to-angular-routed-components) - how do i pass data to angular routed components
 - [YouTube](https://www.youtube.com/watch?v=5K10oYJ5Y-E) - HTTP in Angular - Learning Angular (Part 8)
+- [Stack Overflow](https://stackoverflow.com/questions/56092083/async-await-in-angular-ngoninit) - async await in angular ngOnInit

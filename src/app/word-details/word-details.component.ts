@@ -24,10 +24,15 @@ export class WordDetailsComponent {
 
   apiService = inject(ApiService);
 
-  // this could be converted to async function 
-  // not necessary?
   ngOnChanges() {
-    return this.apiService.getWord(this.searched).then(res => {
+
+    // bug here -> used `return this.apiService.getWord()`
+    // VsCode suggested that ngOnChanges could be an async function 
+    // ngOnChanges, ngOnInit shouldn't be async functions
+    // whenever you see that, you have done something wrong
+    // see https://stackoverflow.com/questions/56092083/async-await-in-angular-ngoninit
+
+    this.apiService.getWord(this.searched).then(res => {
       this.word$ = res;
     });
   }
