@@ -2,6 +2,16 @@
 
 This is a conversion of my previous [Angular Dictionary App](https://github.com/jdegand/angular-dictionary-app) to Angular 17. 
 
+## Screenshots
+
+![](screenshots/angular-17-dictionary-app-1.png)
+
+***
+
+![](screenshots/angular-17-dictionary-app-2.png)
+
+***
+
 ## Built With
 
 - [Angular CLI](https://github.com/angular/angular-cli) version 17.0.0.
