@@ -100,6 +100,7 @@ $ npm start
 - Error Handling -> using fetch etc -> doesn't catchError   
 - The form doesn't reset when you navigate back to the home page with the book icon.
 - Typescript typing -> the returned objects from dictionary app previously had flaws so can't use typing there
+- CORS issue -> There is a possible server issue (CORS) that prevents audio from being played.  The API has had intermittent issues in the past and there have been issues with CORS in the past.  It could be related to the API provider.     
 
 ## Useful Resources
 
