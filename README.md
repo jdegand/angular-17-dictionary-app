@@ -1,6 +1,6 @@
 # Angular 17 Dictionary App
 
-This is a conversion of my previous [Angular Dictionary App](https://github.com/jdegand/angular-dictionary-app) to Angular 17. 
+[This](https://jdegand.github.io/angular-17-dictionary-app/) is a conversion of my previous [Angular Dictionary App](https://github.com/jdegand/angular-dictionary-app) to Angular 17. 
 
 ## Screenshots
 
