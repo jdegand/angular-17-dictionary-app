@@ -26,8 +26,7 @@ export class WordDetailsComponent {
   // early tests rules need to be updated regarding inject function use
   // I don't think it is necessary to use inject function inside of a constructor
   // as the inject function has its own injection context
-  apiService = inject(ApiService);
-
+  constructor(private apiService: ApiService) {}
   ngOnChanges() {
 
     // bug here -> used `return this.apiService.getWord()`

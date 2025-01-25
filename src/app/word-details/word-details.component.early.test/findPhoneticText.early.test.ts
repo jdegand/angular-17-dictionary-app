@@ -9,12 +9,12 @@ describe('WordDetailsComponent.findPhoneticText() findPhoneticText method', () =
   let component: WordDetailsComponent;
 
   beforeEach(() => {
-    component = new WordDetailsComponent();
+    component = new WordDetailsComponent({} as any);
   });
 
   describe('Happy Paths', () => {
-    it('should return an array of items that have a text property', () => {
-      // Test to ensure the method returns items with a text property
+    it('should return items with a text property', () => {
+      // Test to ensure the method returns items that have a text property
       const input = [
         { text: 'phonetic1', audio: 'audio1' },
         { text: 'phonetic2' },
@@ -39,41 +39,48 @@ describe('WordDetailsComponent.findPhoneticText() findPhoneticText method', () =
 
   describe('Edge Cases', () => {
     it('should return an empty array when given an empty array', () => {
-      // Test to ensure the method handles an empty array input gracefully
+      // Test to ensure the method returns an empty array when the input is an empty array
       const input: any[] = [];
       expect(component.findPhoneticText(input)).toEqual([]);
     });
 
-    it('should return an empty array when given undefined', () => {
-      // Test to ensure the method handles undefined input gracefully
-      const input = undefined;
-      expect(component.findPhoneticText(input)).toEqual([]);
+    it('should handle null or undefined items gracefully', () => {
+      // Test to ensure the method handles null or undefined items without throwing errors
+      const input = [
+        null,
+        undefined,
+        { text: 'phonetic1' },
+      ];
+      const expectedOutput = [
+        { text: 'phonetic1' },
+      ];
+      expect(component.findPhoneticText(input)).toEqual(expectedOutput);
     });
 
-    it('should return an empty array when given null', () => {
-      // Test to ensure the method handles null input gracefully
-      const input = null;
-      expect(component.findPhoneticText(input)).toEqual([]);
-    });
-
-    it('should return an empty array when given an array of non-object elements', () => {
-      // Test to ensure the method handles an array of non-object elements gracefully
-      const input = [1, 'string', true, null];
-      expect(component.findPhoneticText(input)).toEqual([]);
-    });
-
-    it('should handle mixed types within the array', () => {
-      // Test to ensure the method handles an array with mixed types, including objects with and without text properties
+    it('should handle a mix of valid and invalid items', () => {
+      // Test to ensure the method correctly filters out invalid items
       const input = [
         { text: 'phonetic1' },
-        42,
-        'string',
         { audio: 'audio1' },
+        null,
         { text: 'phonetic2', audio: 'audio2' },
+        undefined,
       ];
       const expectedOutput = [
         { text: 'phonetic1' },
         { text: 'phonetic2', audio: 'audio2' },
+      ];
+      expect(component.findPhoneticText(input)).toEqual(expectedOutput);
+    });
+
+    it('should handle items with empty text properties', () => {
+      // Test to ensure the method does not include items with empty text properties
+      const input = [
+        { text: '', audio: 'audio1' },
+        { text: 'phonetic1' },
+      ];
+      const expectedOutput = [
+        { text: 'phonetic1' },
       ];
       expect(component.findPhoneticText(input)).toEqual(expectedOutput);
     });

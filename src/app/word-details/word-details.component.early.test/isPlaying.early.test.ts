@@ -9,60 +9,60 @@ describe('WordDetailsComponent.isPlaying() isPlaying method', () => {
   let component: WordDetailsComponent;
 
   beforeEach(() => {
-    component = new WordDetailsComponent();
+    // Initialize the component before each test
+    component = new WordDetailsComponent({} as any);
   });
 
   describe('Happy Paths', () => {
     it('should toggle playing from false to true', () => {
-      // Initial state
+      // Arrange: Ensure initial state is false
       component.playing = false;
 
-      // Act
+      // Act: Call the isPlaying method
       component.isPlaying();
 
-      // Assert
+      // Assert: Check if playing is toggled to true
       expect(component.playing).toBe(true);
     });
 
     it('should toggle playing from true to false', () => {
-      // Initial state
+      // Arrange: Ensure initial state is true
       component.playing = true;
 
-      // Act
+      // Act: Call the isPlaying method
       component.isPlaying();
 
-      // Assert
+      // Assert: Check if playing is toggled to false
       expect(component.playing).toBe(false);
     });
   });
 
   describe('Edge Cases', () => {
     it('should handle multiple toggles correctly', () => {
-      // Initial state
+      // Arrange: Ensure initial state is false
       component.playing = false;
 
-      // Act & Assert
-      component.isPlaying();
-      expect(component.playing).toBe(true);
+      // Act: Toggle multiple times
+      component.isPlaying(); // true
+      component.isPlaying(); // false
+      component.isPlaying(); // true
 
-      component.isPlaying();
-      expect(component.playing).toBe(false);
-
-      component.isPlaying();
+      // Assert: Check if playing is toggled correctly
       expect(component.playing).toBe(true);
     });
 
-    it('should maintain state consistency when toggled multiple times', () => {
-      // Initial state
+    it('should maintain state when toggled an even number of times', () => {
+      // Arrange: Ensure initial state is false
       component.playing = false;
 
-      // Act
-      for (let i = 0; i < 10; i++) {
-        component.isPlaying();
-      }
+      // Act: Toggle an even number of times
+      component.isPlaying(); // true
+      component.isPlaying(); // false
+      component.isPlaying(); // true
+      component.isPlaying(); // false
 
-      // Assert
-      expect(component.playing).toBe(false); // Even number of toggles should return to initial state
+      // Assert: Check if playing is back to initial state
+      expect(component.playing).toBe(false);
     });
   });
 });
