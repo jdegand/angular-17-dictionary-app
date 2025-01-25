@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.css', '../../styles.css'],
 })
-export class PlayerComponent implements OnDestroy {
+export class PlayerComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() audioSrc: any;
 
   playing = false;
@@ -23,7 +23,14 @@ export class PlayerComponent implements OnDestroy {
     * @throws {Error} Throws an error if the audio source is invalid.
     */
   ngOnInit() {
-    this.audio = new Audio(this.audioSrc);
+    if (this.audioSrc) {
+      this.audio = new Audio(this.audioSrc);
+    } else {
+      // console.error('audioSrc is undefined.');
+      // you can set a default audioSrc or display an error message
+      this.audioSrc = '';
+      this.audio = new Audio(this.audioSrc);
+    }
   }
 
   /**
@@ -54,8 +61,10 @@ export class PlayerComponent implements OnDestroy {
     * @throws None
     */
   ngAfterViewInit() {
-    this.endedListener = () => (this.playing = false);
-    this.audio.addEventListener('ended', this.endedListener);
+    if (this.audio) {
+      this.endedListener = () => (this.playing = false);
+      this.audio.addEventListener('ended', this.endedListener);
+    }
   }
 
   /**

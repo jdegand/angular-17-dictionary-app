@@ -10,67 +10,88 @@ describe('ApiService.getWord() getWord method', () => {
 
   beforeEach(() => {
     apiService = new ApiService();
-    globalThis.fetch = jest.fn();
   });
 
-  afterEach(() => {
-    jest.resetAllMocks();
-  });
-
-  // Happy Path Tests
-  describe('Happy Path', () => {
+  describe('Happy Paths', () => {
     it('should return data when a valid searchTerm is provided', async () => {
       // Arrange
-      const mockResponse = [{ word: 'test', meaning: 'a procedure intended to establish the quality, performance, or reliability of something.' }];
-      (globalThis.fetch as jest.Mock).mockResolvedValue({
-        json: jest.fn().mockResolvedValue(mockResponse),
-      });
+      const searchTerm = 'example';
+      const mockResponse = [{ word: 'example', meanings: [] }];
+      globalThis.fetch = jest.fn(() =>
+        Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(mockResponse),
+        })
+      ) as jest.Mock;
 
       // Act
-      const result = await apiService.getWord('test');
+      const result = await apiService.getWord(searchTerm);
 
       // Assert
       expect(result).toEqual(mockResponse);
-      expect(globalThis.fetch).toHaveBeenCalledWith('https://api.dictionaryapi.dev/api/v2/entries/en/test');
+      expect(globalThis.fetch).toHaveBeenCalledWith(apiService.base_url + searchTerm);
     });
   });
 
-  // Edge Case Tests
   describe('Edge Cases', () => {
-    it('should handle undefined searchTerm gracefully', async () => {
+    it('should return an empty array when searchTerm is undefined', async () => {
       // Arrange
-      const mockResponse: any[] = [];
-      (globalThis.fetch as jest.Mock).mockResolvedValue({
-        json: jest.fn().mockResolvedValue(mockResponse),
-      });
+      const searchTerm = undefined;
 
       // Act
-      const result = await apiService.getWord(undefined);
-
-      // Assert
-      expect(result).toEqual(mockResponse);
-      expect(globalThis.fetch).toHaveBeenCalledWith('https://api.dictionaryapi.dev/api/v2/entries/en/undefined');
-    });
-
-    it('should handle network errors gracefully', async () => {
-      // Arrange
-      (globalThis.fetch as jest.Mock).mockRejectedValue(new Error('Network Error'));
-
-      // Act & Assert
-      await expect(apiService.getWord('test')).rejects.toThrow('Network Error');
-    });
-
-    it('should return an empty array if the response is not JSON', async () => {
-      // Arrange
-      (globalThis.fetch as jest.Mock).mockResolvedValue({
-        json: jest.fn().mockResolvedValue(null),
-      });
-
-      // Act
-      const result = await apiService.getWord('test');
+      const result = await apiService.getWord(searchTerm);
 
       // Assert
       expect(result).toEqual([]);
+    });
+
+    it('should return an empty array and log an error when fetch fails', async () => {
+      // Arrange
+      const searchTerm = 'example';
+      globalThis.fetch = jest.fn(() =>
+        Promise.resolve({
+          ok: false,
+          status: 404,
+        })
+      ) as jest.Mock;
+
+      // Act
+      const result = await apiService.getWord(searchTerm);
+
+      // Assert
+      expect(result).toEqual([]);
+      expect(globalThis.fetch).toHaveBeenCalledWith(apiService.base_url + searchTerm);
+    });
+
+    it('should return an empty array when fetch throws an error', async () => {
+      // Arrange
+      const searchTerm = 'example';
+      globalThis.fetch = jest.fn(() => Promise.reject(new Error('Network error'))) as jest.Mock;
+
+      // Act
+      const result = await apiService.getWord(searchTerm);
+
+      // Assert
+      expect(result).toEqual([]);
+      expect(globalThis.fetch).toHaveBeenCalledWith(apiService.base_url + searchTerm);
+    });
+
+    it('should return an empty array when the response data is null', async () => {
+      // Arrange
+      const searchTerm = 'example';
+      globalThis.fetch = jest.fn(() =>
+        Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(null),
+        })
+      ) as jest.Mock;
+
+      // Act
+      const result = await apiService.getWord(searchTerm);
+
+      // Assert
+      expect(result).toEqual([]);
+      expect(globalThis.fetch).toHaveBeenCalledWith(apiService.base_url + searchTerm);
     });
   });
 });

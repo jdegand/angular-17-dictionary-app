@@ -5,21 +5,19 @@
 import { PlayerComponent } from '../player.component';
 
 
-
-
 describe('PlayerComponent.isPlaying() isPlaying method', () => {
   let component: PlayerComponent;
-  let mockAudio: any;
+  let mockAudioPlay: jest.Mock;
+  let mockAudioPause: jest.Mock;
 
   beforeEach(() => {
-    mockAudio = {
-      play: jest.fn(),
-      pause: jest.fn(),
-      addEventListener: jest.fn(),
-    };
     component = new PlayerComponent();
-    component.audioSrc = 'test-audio.mp3';
-    component.audio = mockAudio;
+    mockAudioPlay = jest.fn();
+    mockAudioPause = jest.fn();
+    component.audio = {
+      play: mockAudioPlay,
+      pause: mockAudioPause,
+    };
   });
 
   describe('Happy Paths', () => {
@@ -32,7 +30,8 @@ describe('PlayerComponent.isPlaying() isPlaying method', () => {
 
       // Assert
       expect(component.playing).toBe(true);
-      expect(mockAudio.play).toHaveBeenCalled();
+      expect(mockAudioPlay).toHaveBeenCalled();
+      expect(mockAudioPause).not.toHaveBeenCalled();
     });
 
     it('should pause audio when isPlaying is called and currently playing', () => {
@@ -44,12 +43,13 @@ describe('PlayerComponent.isPlaying() isPlaying method', () => {
 
       // Assert
       expect(component.playing).toBe(false);
-      expect(mockAudio.pause).toHaveBeenCalled();
+      expect(mockAudioPause).toHaveBeenCalled();
+      expect(mockAudioPlay).not.toHaveBeenCalled();
     });
   });
 
   describe('Edge Cases', () => {
-    it('should handle calling isPlaying when audio is undefined', () => {
+    it('should not throw an error if audio is undefined', () => {
       // Arrange
       component.audio = undefined;
 
@@ -57,21 +57,16 @@ describe('PlayerComponent.isPlaying() isPlaying method', () => {
       expect(() => component.isPlaying()).not.toThrow();
     });
 
-    it('should toggle playing state correctly even if audio methods are not defined', () => {
+    it('should not change playing state if audio is undefined', () => {
       // Arrange
-      component.audio = {};
+      component.audio = undefined;
+      const initialPlayingState = component.playing;
 
       // Act
       component.isPlaying();
 
       // Assert
-      expect(component.playing).toBe(true);
-
-      // Act again
-      component.isPlaying();
-
-      // Assert
-      expect(component.playing).toBe(false);
+      expect(component.playing).toBe(initialPlayingState);
     });
   });
 });

@@ -21,7 +21,7 @@ describe('WordDetailsComponent.ngOnChanges() ngOnChanges method', () => {
   describe('Happy paths', () => {
     it('should set word$ with the response from ApiService when searched word is valid', async () => {
       // Arrange: Set up the mock response and input
-      const mockResponse = { word: 'test', meaning: 'a procedure intended to establish the quality, performance, or reliability of something' };
+      const mockResponse = [{ word: 'test', meaning: 'a procedure intended to establish the quality, performance, or reliability of something' }];
       mockApiService.getWord.mockResolvedValue(mockResponse);
       component.searched = 'test';
 
