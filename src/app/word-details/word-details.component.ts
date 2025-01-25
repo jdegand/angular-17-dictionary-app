@@ -19,13 +19,12 @@ export class WordDetailsComponent {
   playing = false;
   searched: string | undefined | null;
 
-  @Input() set word(word: string) {
-    this.searched = word;
+  @Input() set word(word: string | undefined) {
+    if(word){
+      this.searched = word;
+    }
   }
 
-  // early tests rules need to be updated regarding inject function use
-  // I don't think it is necessary to use inject function inside of a constructor
-  // as the inject function has its own injection context
   constructor(private apiService: ApiService) {}
   ngOnChanges() {
 
