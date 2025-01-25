@@ -61,7 +61,7 @@ export class PlayerComponent implements OnInit, OnDestroy, AfterViewInit {
     * @throws None
     */
   ngAfterViewInit() {
-    if (this.audio) {
+    if (this.audio && !this.endedListener) {
       this.endedListener = () => (this.playing = false);
       this.audio.addEventListener('ended', this.endedListener);
     }

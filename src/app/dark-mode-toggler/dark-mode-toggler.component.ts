@@ -10,10 +10,12 @@ import { CommonModule } from '@angular/common';
 })
 export class DarkModeTogglerComponent {
   handleChecked(event: any) {
-    if (event.target.checked) {
-      document.body.setAttribute('data-theme', 'dark');
+    if (event?.target?.checked !== undefined) {
+      document.body.setAttribute('data-theme', event.target.checked ? 'dark' : 'light');
     } else {
+      console.error('event or event.target is null.');
       document.body.setAttribute('data-theme', 'light');
     }
   }
 }
+
