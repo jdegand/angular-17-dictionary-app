@@ -13,15 +13,19 @@ import { SourceComponent } from '../source/source.component';
   styleUrls: ['./word-details.component.css', '../../styles.css'],
 })
 export class WordDetailsComponent {
+  name = 'WordDetailsComponent';
   errorResponse: any;
   word$: any;
   playing = false;
-  searched: string | undefined;
+  searched: string | undefined | null;
 
   @Input() set word(word: string) {
     this.searched = word;
   }
 
+  // early tests rules need to be updated regarding inject function use
+  // I don't think it is necessary to use inject function inside of a constructor
+  // as the inject function has its own injection context
   apiService = inject(ApiService);
 
   ngOnChanges() {
@@ -32,17 +36,19 @@ export class WordDetailsComponent {
     // whenever you see that, you have done something wrong
     // see https://stackoverflow.com/questions/56092083/async-await-in-angular-ngoninit
 
-    this.apiService.getWord(this.searched).then(res => {
-      this.word$ = res;
-    });
+    if (this.searched) {
+      this.apiService.getWord(this.searched).then((res:any) => {
+        this.word$ = res;
+      });
+    }
   }
 
   findPhoneticText(parentList: any) {
-    return parentList.filter((item: any) => item.text);
+    return parentList.filter((item: any) => item?.text);
   }
 
   findAudio(parentList: any) {
-    return parentList.filter((item: any) => item.audio);
+    return parentList.filter((item: any) => item?.audio);
   }
 
   isPlaying() {

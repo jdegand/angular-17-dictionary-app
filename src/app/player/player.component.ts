@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -8,18 +8,36 @@ import { CommonModule } from '@angular/common';
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.css', '../../styles.css'],
 })
-export class PlayerComponent {
+export class PlayerComponent implements OnDestroy {
   @Input() audioSrc: any;
 
   playing = false;
 
   audio: any;
+  endedListener: any;
 
+  /**
+    * Initializes the audio object with the specified audio source.
+    * This function is called once the component is initialized.
+    * 
+    * @throws {Error} Throws an error if the audio source is invalid.
+    */
   ngOnInit() {
     this.audio = new Audio(this.audioSrc);
   }
 
+  /**
+    * Toggles the playback state of the audio. 
+    * If currently playing, it pauses the audio; otherwise, it plays the audio.
+    * 
+    * @returns {void} No return value.
+    * @throws {Error} Throws an error if audio playback fails.
+    */
   isPlaying() {
+    if (!this.audio) {
+      return;
+    }
+
     this.playing = !this.playing;
     if (this.playing) {
       this.audio.play();
@@ -28,7 +46,27 @@ export class PlayerComponent {
     }
   }
 
+  /**
+    * Initializes the component after the view has been fully initialized.
+    * Sets up an event listener to update the 'playing' state when the audio ends.
+    * 
+    * @returns void
+    * @throws None
+    */
   ngAfterViewInit() {
-    this.audio.addEventListener('ended', () => (this.playing = false));
+    this.endedListener = () => (this.playing = false);
+    this.audio.addEventListener('ended', this.endedListener);
+  }
+
+  /**
+    * Cleans up the event listener when the component is destroyed.
+    * 
+    * @returns void
+    * @throws None
+    */
+  ngOnDestroy() {
+    if (this.audio && this.endedListener) {
+      this.audio.removeEventListener('ended', this.endedListener);
+    }
   }
 }

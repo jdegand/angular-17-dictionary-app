@@ -70,6 +70,12 @@
           "options": {
             "buildTarget": "angular-17-dictionary-app:build"
           }
+        },
+        "test": {
+          "builder": "@angular-builders/jest:run",
+          "options": {
+            "configPath": "./jest.config.ts"
+          }
         }
       }
     }
