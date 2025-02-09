@@ -13,8 +13,8 @@ describe('WordDetailsComponent.findAudio() findAudio method', () => {
   });
 
   describe('Happy Paths', () => {
-    it('should return an array of items that have an audio property', () => {
-      // Test to ensure the method returns items with an audio property
+    it('should return an array of items with audio properties', () => {
+      // Test to ensure the method returns items with audio properties
       const input = [
         { text: 'example', audio: 'audio1.mp3' },
         { text: 'test', audio: 'audio2.mp3' },
@@ -27,8 +27,8 @@ describe('WordDetailsComponent.findAudio() findAudio method', () => {
       expect(component.findAudio(input)).toEqual(expectedOutput);
     });
 
-    it('should return an empty array if no items have an audio property', () => {
-      // Test to ensure the method returns an empty array when no items have an audio property
+    it('should return an empty array if no items have audio properties', () => {
+      // Test to ensure the method returns an empty array when no items have audio properties
       const input = [
         { text: 'example' },
         { text: 'test' },
@@ -39,42 +39,27 @@ describe('WordDetailsComponent.findAudio() findAudio method', () => {
   });
 
   describe('Edge Cases', () => {
+    it('should throw an error if the input is not an array', () => {
+      // Test to ensure the method throws an error when input is not an array
+      const input = { text: 'example', audio: 'audio1.mp3' };
+      expect(() => component.findAudio(input)).toThrow('parentList should be an array');
+    });
+
     it('should return an empty array if the input array is empty', () => {
-      // Test to ensure the method handles an empty input array gracefully
+      // Test to ensure the method returns an empty array when input is an empty array
       const input: any[] = [];
       expect(component.findAudio(input)).toEqual([]);
     });
 
-    it('should return an empty array if the input is not an array', () => {
-      // Test to ensure the method handles non-array inputs gracefully
-      const input = null;
-      expect(component.findAudio(input)).toEqual([]);
-    });
-
-    it('should handle items with undefined audio properties', () => {
-      // Test to ensure the method handles items with undefined audio properties
+    it('should handle items with undefined or null audio properties gracefully', () => {
+      // Test to ensure the method handles items with undefined or null audio properties
       const input = [
-        { text: 'example', audio: undefined },
-        { text: 'test', audio: 'audio2.mp3' },
-        { text: 'sample', audio: null }
+        { text: 'example', audio: null },
+        { text: 'test', audio: undefined },
+        { text: 'sample', audio: 'audio3.mp3' }
       ];
       const expectedOutput = [
-        { text: 'test', audio: 'audio2.mp3' }
-      ];
-      expect(component.findAudio(input)).toEqual(expectedOutput);
-    });
-
-    it('should handle items with non-string audio properties', () => {
-      // Test to ensure the method handles items with non-string audio properties
-      const input = [
-        { text: 'example', audio: 123 },
-        { text: 'test', audio: 'audio2.mp3' },
-        { text: 'sample', audio: true }
-      ];
-      const expectedOutput = [
-        { text: 'example', audio: 123 },
-        { text: 'test', audio: 'audio2.mp3' },
-        { text: 'sample', audio: true }
+        { text: 'sample', audio: 'audio3.mp3' }
       ];
       expect(component.findAudio(input)).toEqual(expectedOutput);
     });

@@ -20,12 +20,12 @@ export class WordDetailsComponent {
   searched: string | undefined | null;
 
   @Input() set word(word: string | undefined) {
-    if(word){
+    if (word) {
       this.searched = word;
     }
   }
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService) { }
   ngOnChanges() {
 
     // bug here -> used `return this.apiService.getWord()`
@@ -35,18 +35,26 @@ export class WordDetailsComponent {
     // see https://stackoverflow.com/questions/56092083/async-await-in-angular-ngoninit
 
     if (this.searched) {
-      this.apiService.getWord(this.searched).then((res:any) => {
+      this.apiService.getWord(this.searched).then((res: any) => {
         this.word$ = res;
       });
     }
   }
 
   findPhoneticText(parentList: any) {
-    return parentList.filter((item: any) => item?.text);
+    if (!Array.isArray(parentList)) {
+      throw new Error("parentList should be an array");
+    }
+
+    return parentList.filter(item => item?.text);
   }
 
   findAudio(parentList: any) {
-    return parentList.filter((item: any) => item?.audio);
+    if (!Array.isArray(parentList)) {
+      throw new Error("parentList should be an array");
+    }
+
+    return parentList.filter(item => item?.audio);
   }
 
   isPlaying() {
