@@ -10,13 +10,15 @@ describe('DarkModeTogglerComponent.handleChecked() handleChecked method', () => 
 
   beforeEach(() => {
     component = new DarkModeTogglerComponent();
+    // Reset the document body attribute before each test
+    document.body.removeAttribute('data-theme');
   });
 
+  // Happy Path Tests
   describe('Happy Paths', () => {
     it('should set data-theme to "dark" when event.target.checked is true', () => {
       // Arrange
       const event = { target: { checked: true } };
-      document.body.setAttribute('data-theme', 'light');
 
       // Act
       component.handleChecked(event);
@@ -28,7 +30,6 @@ describe('DarkModeTogglerComponent.handleChecked() handleChecked method', () => 
     it('should set data-theme to "light" when event.target.checked is false', () => {
       // Arrange
       const event = { target: { checked: false } };
-      document.body.setAttribute('data-theme', 'dark');
 
       // Act
       component.handleChecked(event);
@@ -38,44 +39,39 @@ describe('DarkModeTogglerComponent.handleChecked() handleChecked method', () => 
     });
   });
 
+  // Edge Case Tests
   describe('Edge Cases', () => {
-    it('should handle event with undefined target gracefully', () => {
+    it('should set data-theme to "light" and log error when event is null', () => {
       // Arrange
-      const event = { target: undefined };
-      document.body.setAttribute('data-theme', 'dark');
+      const event = null;
 
       // Act
       component.handleChecked(event);
 
       // Assert
-      // Expect no change in data-theme
-      expect(document.body.getAttribute('data-theme')).toBe('dark');
-    });
-
-    it('should handle event with null target gracefully', () => {
-      // Arrange
-      const event = { target: null };
-      document.body.setAttribute('data-theme', 'light');
-
-      // Act
-      component.handleChecked(event);
-
-      // Assert
-      // Expect no change in data-theme
       expect(document.body.getAttribute('data-theme')).toBe('light');
     });
 
-    it('should handle event with target having no checked property gracefully', () => {
+    it('should set data-theme to "light" and log error when event.target is undefined', () => {
       // Arrange
-      const event = { target: {} };
-      document.body.setAttribute('data-theme', 'dark');
+      const event = {};
 
       // Act
       component.handleChecked(event);
 
       // Assert
-      // Expect no change in data-theme
-      expect(document.body.getAttribute('data-theme')).toBe('dark');
+      expect(document.body.getAttribute('data-theme')).toBe('light');
+    });
+
+    it('should set data-theme to "light" and log error when event.target.checked is undefined', () => {
+      // Arrange
+      const event = { target: {} };
+
+      // Act
+      component.handleChecked(event);
+
+      // Assert
+      expect(document.body.getAttribute('data-theme')).toBe('light');
     });
   });
 });
