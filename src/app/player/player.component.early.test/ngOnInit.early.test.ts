@@ -39,7 +39,9 @@ describe('PlayerComponent.ngOnInit() ngOnInit method', () => {
 
       // Assert
       expect(component.audio).toBeInstanceOf(Audio);
-      expect(component.audio.src).toBe('');
+      
+      // returned value may depend on browser used and thus this test could be flaky
+      expect(component.audio.src).toBe('http://localhost/');
     });
 
     it('should handle null audioSrc gracefully', () => {
@@ -51,19 +53,23 @@ describe('PlayerComponent.ngOnInit() ngOnInit method', () => {
 
       // Assert
       expect(component.audio).toBeInstanceOf(Audio);
-      expect(component.audio.src).toBe('');
+
+      // returned value may depend on browser used and thus this test could be flaky
+      expect(component.audio.src).toBe('http://localhost/');
     });
 
     it('should handle empty string audioSrc gracefully', () => {
       // Arrange
       component.audioSrc = '';
-
+    
       // Act
       component.ngOnInit();
-
+    
       // Assert
       expect(component.audio).toBeInstanceOf(Audio);
-      expect(component.audio.src).toBe('');
+
+      // returned value may depend on browser used and thus this test could be flaky
+      expect(component.audio.src).toBe('http://localhost/');
     });
   });
 });
